@@ -1,5 +1,6 @@
 :root {
   --light-green: #c1d72f;
+  --black: #464646;
 }
 
 .navbar {
@@ -37,7 +38,7 @@
 
 .navLinks a {
   text-decoration: none;
-  color: black;
+  color: var(--black);
   font-weight: 600;
   font-size: 1rem;
   padding-bottom: 5px; /* Space for the underline effect */
@@ -79,7 +80,7 @@
   align-items: center;
   gap: 0.5rem;
   background-color: var(--light-green); /* Green background */
-  color: black;
+  color: var(--black);
   border: none;
   border-radius: 6px;
   padding: 0.4rem 1.25rem;
