@@ -4,7 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import styles from "./Navbar.module.css";
 
-export default function Navbar() {
+interface NavbarProps {
+  onNewContact: () => void;
+}
+
+export default function Navbar({ onNewContact }: NavbarProps) {
   const pathname = usePathname();
   return (
     <header className={styles.navbar}>
@@ -25,7 +29,9 @@ export default function Navbar() {
         >
           Favorites
         </Link>
-        <button className={styles.newButton}>New</button>
+        <button className={styles.newButton} onClick={onNewContact}>
+          New
+        </button>
       </nav>
     </header>
   );
