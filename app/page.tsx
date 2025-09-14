@@ -1,3 +1,10 @@
+import ContactCard from "@/components/ContactCard";
+
 export default function Home() {
-  return <h1>Hello overview!</h1>;
+  return (
+    <div>
+      <h1>Hello overview!</h1>
+      <ContactCard name="Juanes" email="juanes@example.com" />
+    </div>
+  );
 }
