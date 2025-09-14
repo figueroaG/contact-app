@@ -1,3 +1,9 @@
+import List from "@/components/List";
+
 export default function Home() {
-  return <h1>Hello contacts!</h1>;
+  return (
+    <div>
+      <List contacts={[]} showFavorites={false} />
+    </div>
+  );
 }
