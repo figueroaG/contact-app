@@ -6,3 +6,4 @@ sqlalchemy
 marshmallow
 flask-jwt-extended
 passlib
+Flask-Cors

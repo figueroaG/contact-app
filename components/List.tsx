@@ -1,6 +1,11 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import ContactCard from "./ContactCard";
 import styles from "./List.module.css";
+
+const token =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1Nzk0NDk0OCwianRpIjoiMTgwMTgwMGYtYjMzMi00NTVlLWEyM2ItMWE3NDc4MWVkZDBhIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjEiLCJuYmYiOjE3NTc5NDQ5NDgsImNzcmYiOiI2MmY0MzY1Zi01ZDI1LTQ4MTAtODdjMC03ZDg3ZThkYzY4MTIifQ.aVx28Oc2jUsmSTtn-BthvohSI-R-wLwGcE_D4aGgZyQ";
 
 interface Contact {
   id: number;
@@ -11,11 +16,35 @@ interface Contact {
 }
 
 interface ListProps {
-  contacts: Contact[];
   showFavorites: boolean;
 }
 
-const List: React.FC<ListProps> = ({ contacts, showFavorites }) => {
+const List: React.FC<ListProps> = ({ showFavorites }) => {
+  const [contacts, setContacts] = useState<Contact[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const fetchContacts = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch("http://127.0.0.1:5000/contacts", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await response.json();
+        setContacts(data);
+      } catch (error) {
+        console.error("Failed to fetch contacts:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchContacts();
+  }, []);
+
   const filteredContacts = showFavorites
     ? contacts.filter((contact) => contact.isFavorite)
     : contacts;
@@ -28,19 +57,23 @@ const List: React.FC<ListProps> = ({ contacts, showFavorites }) => {
         </span>
         <div className={styles.greenLine}></div>
       </div>
-      <div className={styles.cardGrid}>
-        {filteredContacts.map((contact) => (
-          <ContactCard
-            key={contact.id}
-            name={contact.name}
-            email={contact.email}
-            avatarUrl={contact.avatarUrl}
-            onRemove={() =>
-              console.log(`Remove contact with id: ${contact.id}`)
-            }
-          />
-        ))}
-      </div>
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        <div className={styles.cardGrid}>
+          {filteredContacts.map((contact) => (
+            <ContactCard
+              key={contact.id}
+              name={contact.name}
+              email={contact.email}
+              avatarUrl={contact.avatarUrl}
+              onRemove={() =>
+                console.log(`Remove contact with id: ${contact.id}`)
+              }
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

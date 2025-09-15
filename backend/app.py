@@ -2,6 +2,8 @@ from flask import Flask, jsonify
 from flask_smorest import Api
 from flask_jwt_extended import JWTManager
 from resources.user import blp as user_blueprint
+from flask_cors import CORS
+
 
 from models.db import db
 import os
@@ -9,6 +11,7 @@ import os
 # Factory Pattern
 def create_app(db_url=None):
     app = Flask(__name__)
+    CORS(app)
     app.config["PROPAGATE_EXCEPTIONS"] = True
     app.config["API_TITLE"] = "Contact App REST API"
     app.config["API_VERSION"] = "v1"
@@ -64,6 +67,3 @@ def create_app(db_url=None):
     api.register_blueprint(contacts_blueprint)
 
     return app
-
-# Should I add JWT Claims for Administrator?
-# If so, How to use JWT claims in an endpoint
