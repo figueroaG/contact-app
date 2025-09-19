@@ -15,4 +15,4 @@ COPY . .
 EXPOSE 5000
 
 # 6. Define the startup command
-CMD ["flask", "run", "--host=0.0.0.0", "--port=$PORT"]
+CMD flask run --host=0.0.0.0 --port=$PORT
