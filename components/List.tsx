@@ -34,7 +34,17 @@ const List: React.FC<ListProps> = ({ showFavorites }) => {
           },
         });
         const data = await response.json();
-        setContacts(data);
+
+        const formattedContacts = data.map((contact: any) => ({
+          id: parseInt(contact.id, 10), // Convert string ID to number
+          name: `${contact.first_name} ${contact.last_name}`, // Combine first and last name
+          email: contact.email,
+          isFavorite: contact.favorite, // Map 'favorite' to 'isFavorite'
+          avatarUrl: contact.avatarUrl || undefined, // Handle optional avatar
+        }));
+
+        // Set the correctly shaped data into state
+        setContacts(formattedContacts);
       } catch (error) {
         console.error("Failed to fetch contacts:", error);
       } finally {

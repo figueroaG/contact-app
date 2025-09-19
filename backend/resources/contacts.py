@@ -38,7 +38,7 @@ class ContactList(MethodView):
 
         return contact
 
-@blp.route("/contacts/<string:contact_id>")
+@blp.route("/contacts/<int:contact_id>")
 class Contact(MethodView):
 
     @jwt_required()
@@ -56,7 +56,7 @@ class Contact(MethodView):
     @blp.arguments(ContactUpdateSchema)
     @blp.response(200, ContactSchema)
     def patch(self, update_data, contact_id):
-        """Updates an existing contact's favorite state"""
+        """Updates an existing contact's favorite state by ID"""
         contact = ContactModel.query.get_or_404(contact_id)
 
         # Update the contact object with new data if it exists in the request
@@ -67,4 +67,3 @@ class Contact(MethodView):
         db.session.commit()
 
         return contact
-

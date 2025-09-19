@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, app, jsonify
 from flask_smorest import Api
 from flask_jwt_extended import JWTManager
 from resources.user import blp as user_blueprint
@@ -26,7 +26,7 @@ def create_app(db_url=None):
 
     api = Api(app)
 
-    app.config["JWT_SECRET_KEY"] = "juanes"   # to-do: str(secrets.SystemRandom().getrandbits(128)) generate a safe key
+    app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", "a-strong-default-secret-for-dev")
     app.config["JWT_ACCESS_TOKEN_EXPIRES"] = False
     jwt = JWTManager(app)
 
