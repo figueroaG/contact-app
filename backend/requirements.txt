@@ -8,3 +8,4 @@ flask-jwt-extended
 passlib
 Flask-Cors
 psycopg2-binary
+flask_migrate

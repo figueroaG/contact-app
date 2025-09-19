@@ -3,7 +3,7 @@ from flask_smorest import Api
 from flask_jwt_extended import JWTManager
 from resources.user import blp as user_blueprint
 from flask_cors import CORS
-
+from flask_migrate import Migrate # Import the Migrate class
 
 from models.db import db
 import os
@@ -22,10 +22,12 @@ def create_app(db_url=None):
     app.config["SQLALCHEMY_DATABASE_URI"] = db_url or os.getenv("DATABASE_URL", "sqlite:///data.db")
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-    db.init_app(app)    # Initialize the db with the app
+    db.init_app(app)  # Initialize the db with the app
+
+    migrate = Migrate(app, db) # <-- Add this line to initialize Flask-Migrate
 
     api = Api(app)
-
+    
     app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", "a-strong-default-secret-for-dev")
     app.config["JWT_ACCESS_TOKEN_EXPIRES"] = False
     jwt = JWTManager(app)
@@ -60,8 +62,10 @@ def create_app(db_url=None):
 
     from resources.contacts import blp as contacts_blueprint
 
-    with app.app_context():
-        db.create_all()
+    # The create_all() call is not needed if you're using migrations
+    # It's better to manage schema changes with migrations
+    # with app.app_context():
+    #     db.create_all()
 
     api.register_blueprint(user_blueprint)
     api.register_blueprint(contacts_blueprint)
